@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>LifeandFun</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- header -->
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'lifeandfun/css/main.css' %}">
+    <!-- swiper -->
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'lifeandfun/css/swiper-3.3.1.min.css' %}">
+    <!-- mainpage -->
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'lifeandfun/css/dr2016.css' %}">
+    <script type="text/javascript" src="{% static 'lifeandfun/js/j.m.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lifeandfun/js/main.js' %}"></script>
+    <link href="{% static 'lifeandfun/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lifeandfun/assets/css/style.css' %}" rel="stylesheet">
+
+</head>
+<body style="">
+
+{% include "lifeandfun/navbar.html" %}
+
+<div id="tags" class="blog-mf sect-pt4 route" align="center">
+    <h3 class="title-a">tags</h3>
+    <p class="subtitle-a">View with tags.</p>
+    <div class="line-mf"></div>
+    <div class="container" align="center">
+        {% for i in alltags %}
+            <div class="dr_mod2_item">
+                <a href="/life/tag/{{ i.id }}/" target="_blank" class="tag1">
+                    <img src="{% static 'lifeandfun/images/tx.jpg' %}">
+                    <strong>{{ i.tagname }}</strong>
+                </a>
+            </div>
+        {% empty %}
+            这里是内容的荒原，暂时什么都还没有。
+        {% endfor %}
+    </div>
+</div>
+
+<section id="blog" class="blog-mf sect-pt4 route">
+    <div class="container" align="center">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="title-box text-center">
+                    <h3 class="title-a">
+                        Blogs
+                    </h3>
+                    <p class="subtitle-a">
+                        Just say something.
+                    </p>
+                    <div class="line-mf"></div>
+                </div>
+            </div>
+        </div>
+        {% if articles.count != 0 %}
+            <div class="row">
+                {% for i in articles %}
+                    <div class="col-md-4">
+
+                        <div class="card card-blog">
+                            <div class="card-img">
+                                <a href="detail/{{ i.id }}"><img src="{% static 'lifeandfun/assets/img/post-1.jpg' %}"
+                                                                 alt=""
+                                                                 class="img-fluid"></a>
+                            </div>
+                            <div class="card-body">
+                                <div class="card-category-box">
+                                    <div class="card-category">
+                                        <h6 class="category">{{ i.tags.first }}</h6>
+                                    </div>
+                                </div>
+                                <h3 class="card-title"><a href="detail/{{ i.id }}">{{ i.title }}</a></h3>
+                                <p class="card-description">
+                                    {{ i.description }}
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <div class="post-author">
+                                    <a href="#">
+                                        <img src="{% static 'lifeandfun/assets/img/testimonial-2.jpg' %}" alt=""
+                                             class="avatar rounded-circle">
+                                        <span class="author">{{ i.username }}</span>
+                                    </a>
+                                </div>
+                                <div class="post-date">
+                                    <span class="ion-ios-clock-outline"></span> {{ i.u_time.date }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>这里是内容的荒原，暂时什么都还没有。</p>
+        {% endif %}
+    </div>
+</section><!-- End Blog Section -->
+
+</body>
+</html>

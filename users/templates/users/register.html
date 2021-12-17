@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'users/css/register.css' %}" rel="stylesheet"/>
+    <title>注册</title>
+</head>
+<body>
+<div class="container">
+    <div class="col">
+        <form class="form-register" action="/users/register/" method="post">
+
+            {% if rgf.captcha.errors %}
+                <div class="alert alert-warning">{{ rgf.captcha.errors }}</div>
+            {% elif message %}
+                <div class="alert alert-warning">{{ message }}</div>
+            {% endif %}
+
+            {% csrf_token %}
+            <h3 class="text-center">欢迎注册</h3>
+
+            <div class="form-group">
+                {{ rgf.nickname.label_tag }}
+                {{ rgf.nickname }}
+            </div>
+            <div class="form-group">
+                {{ rgf.account.label_tag }}
+                {{ rgf.account }}
+            </div>
+            <div class="form-group">
+                {{ rgf.password1.label_tag }}
+                {{ rgf.password1 }}
+            </div>
+            <div class="form-group">
+                {{ rgf.password2.label_tag }}
+                {{ rgf.password2 }}
+            </div>
+            <div class="form-group">
+                {{ rgf.email.label_tag }}
+                {{ rgf.email }}
+            </div>
+            <div class="form-group">
+                {{ rgf.gender.label_tag }}
+                {{ rgf.gender }}
+            </div>
+            {#            <div class="form-group">#}
+            {#                {{ rgf.birthday.label_tag }}#}
+            {#                {{ rgf.birthday }}#}
+            {#            </div>#}
+            <div class="form-group">
+                <label for="id_birthday">生日:</label>
+                <input type="date" class="form-control" name="birthday" value="1900-01-01">
+            </div>
+            <div class="form-group">
+                <label for="id_city">城市:</label>
+                <input type="text" name="city" class="form-control" maxlength="256" required="" id="id_city"
+                       value="unknown">
+            </div>
+            {#            <div class="form-group">#}
+            {#                {{ rgf.city.label_tag }}#}
+            {#                {{ rgf.city }}#}
+            {#            </div>#}
+            <div class="form-group">
+                {{ rgf.captcha.label_tag }}
+                {{ rgf.captcha }}
+            </div>
+            <div>
+                <a href="/users/login/">
+                    <ins>直接登录</ins>
+                </a>
+                <button type="submit" class="btn btn-primary float-right">注册</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script src="https://cdn.bootcss.com/popper.js/1.15.0/umd/popper.js"></script>
+<script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/1.12.3/jquery.min.js"></script>
+<script>
+    //点击刷新验证码
+    $(function () {
+        $('.captcha').css({
+            'cursor': 'pointer'
+        });
+        // ajax刷新
+        $('.captcha').click(function () {
+            console.log('click');
+            $.get("{% url 'captcha-refresh' %}",
+                function (result) {
+                    $('.captcha').attr('src', result['image_url']);
+                    $('#id_captcha_0').val(result['key'])
+                });
+        });
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,380 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'todo/css/font-awesome.min.css' %}"
+          type="text/css">
+    <link rel="stylesheet" href="{% static 'todo/css/bootstrap-4.3.1.css' %}">
+</head>
+
+<body onload="loadall()">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <div class="container justify-content-center">
+        <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse"
+                data-target="#navbar9">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse text-center justify-content-center" id="navbar9">
+            <ul class="navbar-nav">
+                <li class="nav-item mx-2"><a class="nav-link" href="/">主站</a></li>
+                <li class="nav-item mx-2"><a class="nav-link" href="#" onclick="newOne(1)">新建分组</a></li>
+                <li class="nav-item mx-2"><a class="nav-link" href="#" onclick="newOne(2)">新建事件</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                {#                <div class="col-md-4">#}
+                <div class="btn-group">
+                    <button class="btn btn-primary active" onclick="showitem(1)" id="btn1" value="0">显示全部</button>
+                    <button class="btn btn-default active" onclick="showitem(2)" id="btn2" value="1">显示已完成</button>
+                    <button class="btn btn-default active" onclick="showitem(3)" id="btn3" value="1">显示已放弃</button>
+                </div>
+                {#                </div>#}
+                <div class="list-group">
+                    {% for i in lists %}
+
+                        <a href="#list{{ i.id }}" data-toggle="tab" id="tab{{ i.id }}"
+                           class="{% if forloop.first %}active{% endif %} list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">{{ i.listname }}</h5> <small>{{ i.c_time }}</small>
+                            </div>
+                            <p class="mb-1">{{ i.description }}</p>
+                            <small>{{ request.session.thisnickname }}</small>
+                            <a href="#" class="btn btn-primary" onclick="deletelist({{ i.id }})" id="lbtn{{ i.id }}">
+                                删除此分组</a>
+                        </a>
+                    {% empty %}
+                        空空如野
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-8 tab-content">
+
+                <!-- list 1 -->
+                {% for key,value in listmap.items %}
+                    <div class="tab-pane {% if forloop.first %}active{% endif %}"
+                         id="list{{ key }}">
+
+                        {% for j in value %}
+
+                            <div class="card" id="card{{ j }}"
+                                 style="display: {% if j.status == 0 %}''{% else %}'none'{% endif %}">
+                                <input type="hidden" id="statu{{ j }}" value="1">
+                                <div class="card-header" id="head{{ j }}"> 1</div>
+                                <div class="card-body">
+                                    <h5 class="card-title" id="item{{ j }}">1</h5>
+                                    {#                                    <a href="#" onclick="loaditem({{ j }})">load this item</a>#}
+                                    <p class="card-text" id="description{{ j }}">1</p>
+                                    <div class="row">
+                                        <div class="col-md-6 card-footer">
+                                            <div class="text-muted" id="ctime{{ j }}"> 1</div>
+                                            <div class="text-success" id="ptime{{ j }}"> 1</div>
+                                        </div>
+                                        <div class="col-md-6" align="right">
+                                            <div class="btn-group" style="top:5px;right:5px">
+                                                <a href="#" class="btn btn-primary"
+                                                   onclick="deleteitem({{ j }})">Delete</a>
+                                                <a href="#" class="btn btn-primary"
+                                                   onclick="finishitem({{ j }})">Finish</a>
+                                                <a href="#" class="btn btn-primary"
+                                                   onclick="giveupitem({{ j }})">GiveUp</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+
+                {#                <div class="card">#}
+                {#                    <div class="card-header"> 1</div>#}
+                {#                    <div class="card-body">#}
+                {#                        <h5 class="card-title">Special title treatment</h5>#}
+                {#                        <p class="card-text">With supporting text below as a natural lead-in to additional#}
+                {#                            content.</p>#}
+                {#                        <div class="row">#}
+                {#                            <div class="col-md-4">#}
+                {#                                <div class="card-footer text-muted"> 2 days ago</div>#}
+                {#                            </div>#}
+                {#                            <div class="col-md-8" align="right">#}
+                {#                                <div class="btn-group" style="top:5px;right:5px"><a href="#"#}
+                {#                                                                                    class="btn btn-primary">Btn#}
+                {#                                    1</a> <a href="#"#}
+                {#                                             class="btn btn-primary">Btn 2</a> <a href="#"#}
+                {#                                                                                  class="btn btn-primary">Btn 3</a>#}
+                {#                                </div>#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                </div>#}
+                {##}
+                {##}
+                {#                <!-- list 1 -->#}
+                {#                <div class="tab-pane fade" id="list2">#}
+                {##}
+                {#                    <div class="card">#}
+                {#                        <div class="card-header"> 2</div>#}
+                {#                        <div class="card-body">#}
+                {#                            <h5 class="card-title">Special title treatment</h5>#}
+                {#                            <p class="card-text">With supporting text below as a natural lead-in to additional#}
+                {#                                content.</p>#}
+                {#                            <div class="row">#}
+                {#                                <div class="col-md-4">#}
+                {#                                    <div class="card-footer text-muted"> 2 days ago</div>#}
+                {#                                </div>#}
+                {#                                <div class="col-md-8" align="right">#}
+                {#                                    <div class="btn-group" style="top:5px;right:5px"><a href="#"#}
+                {#                                                                                        class="btn btn-primary">Btn#}
+                {#                                        1</a> <a href="#"#}
+                {#                                                 class="btn btn-primary">Btn 2</a> <a href="#"#}
+                {#                                                                                      class="btn btn-primary">Btn 3</a>#}
+                {#                                    </div>#}
+                {#                                </div>#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {##}
+                {#                </div>#}
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'todo/js/jquery-3.3.1.slim.min.js' %}"></script>
+<script src="{% static 'todo/js/popper.min.js' %}"></script>
+<script src="{% static 'todo/js/bootstrap.min.js' %}"></script>
+
+<script>
+    function newOne(type) {
+        if (type == 1)
+            window.open('newlist/', 'newwindow', 'height=250, width=400, top=150, left=400, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no') //这句要写成一行
+        else
+            window.open('newitem/', 'newwindow', 'height=350, width=400, top=150, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no') //这句要写成一行
+    }
+
+    function loaditem(id) {
+        console.log(id + "->")
+        var xmlhttp;
+        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else {// code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                console.log("success")
+                var msg = eval("(" + xmlhttp.responseText + ")")
+                document.getElementById("head" + id).innerHTML = msg.itemname
+                document.getElementById("item" + id).innerText = msg.itemname
+                document.getElementById("description" + id).innerText = msg.descrp
+                document.getElementById("ctime" + id).innerText = "创建时间  ：" + msg.ctime
+                document.getElementById("ptime" + id).innerText = "期望时间  ：" + msg.ptime
+                console.log(msg.statu)
+                if (msg.statu == "0") {
+                    document.getElementById("statu" + id).setAttribute("class", "item created");
+                    {#console.log("set class created");#}
+                } else if (msg.statu == "1") {
+                    document.getElementById("statu" + id).setAttribute("class", "item finished");
+                    document.getElementById("head" + id).setAttribute("style", "background-color: cadetblue;")
+                    {#console.log("set class finished");#}
+                } else if (msg.statu == "2") {
+                    document.getElementById("statu" + id).setAttribute("class", "item giveup");
+                    document.getElementById("head" + id).setAttribute("style", "background-color: dimgray;")
+                    {#console.log("set class giveup");#}
+                }
+                console.log(msg)
+            } else {
+                console.log("fail")
+            }
+        }
+        var url = "/todo/load/" + id + "/"
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+    }
+
+    function loadall() {
+        {% for key,value in listmap.items %}
+            {% for j in value %}
+                loaditem({{ j }});
+            {% endfor %}
+        {% endfor %}
+    }
+
+    function deleteitem(id) {
+        console.log(id + "->")
+        var xmlhttp;
+        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else {// code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                meg = eval("(" + xmlhttp.responseText + ")")
+                {#if (eval(msg.outcome)) {#}
+                alert("删除成功");
+                var node = document.getElementById("card" + id);
+                node.parentNode.removeChild(node);
+                {# }#}
+            }
+        }
+        var url = "/todo/delete/" + id + "/"
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+    }
+
+
+    function deletelist(id) {
+        console.log(id + "->")
+        var xmlhttp;
+        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else {// code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                meg = eval("(" + xmlhttp.responseText + ")")
+                {#if (eval(msg.outcome)) {#}
+                {#alert("删除成功");#}
+                var node = document.getElementById("tab" + id);
+                node.parentNode.removeChild(node);
+                var node2 = document.getElementById("list" + id);
+                node2.parentNode.removeChild(node2);
+                var node3 = document.getElementById("lbtn" + id);
+                node3.parentNode.removeChild(node3);
+
+                {# }#}
+            }
+        }
+        var url = "/todo/dellist/" + id + "/"
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+    }
+
+
+    function finishitem(id) {
+        console.log(id + "->")
+        var xmlhttp;
+        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else {// code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                meg = eval("(" + xmlhttp.responseText + ")")
+                var node = document.getElementById("head" + id);
+                node.setAttribute("style", "background-color: cadetblue;")
+            }
+        }
+        var url = "/todo/finish/" + id + "/"
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+    }
+
+    function giveupitem(id) {
+        console.log(id + "->")
+        var xmlhttp;
+        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else {// code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                meg = eval("(" + xmlhttp.responseText + ")")
+                var node = document.getElementById("head" + id);
+                node.setAttribute("style", "background-color: dimgray;")
+
+            }
+        }
+        var url = "/todo/giveup/" + id + "/"
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+    }
+
+    function showitem(type) {
+
+        if (type == 1) {
+            {#显示全部#}
+            if (document.getElementById("btn1").getAttribute("value") == "0") {
+                var list = document.getElementsByClassName("item");
+                Array.prototype.forEach.call(list, function (it) {
+                    {#console.log("hide");#}
+                    it.parentNode.style.display = "none";
+                });
+                document.getElementById("btn1").setAttribute("value", "1");
+            } else {
+                var list = document.getElementsByClassName("item");
+                Array.prototype.forEach.call(list, function (it) {
+                    {#console.log("hide");#}
+                    it.parentNode.style.display = "";
+                });
+                document.getElementById("btn1").setAttribute("value", "0");
+            }
+        } else if (type == 2) {
+            {#显示已完成#}
+            if (document.getElementById("btn2").getAttribute("value") == "0") {
+                var list = document.getElementsByClassName("finished");
+                Array.prototype.forEach.call(list, function (it) {
+                    {#console.log("hide");#}
+                    it.parentNode.style.display = "none";
+                });
+                document.getElementById("btn2").setAttribute("value", "1");
+            } else {
+                var list = document.getElementsByClassName("finished");
+                Array.prototype.forEach.call(list, function (it) {
+                    {#console.log("hide");#}
+                    it.parentNode.style.display = "";
+                });
+                document.getElementById("btn2").setAttribute("value", "0");
+            }
+        } else {
+            {#显示已放弃#}
+            if (document.getElementById("btn3").getAttribute("value") == "0") {
+                var list = document.getElementsByClassName("giveup");
+                Array.prototype.forEach.call(list, function (it) {
+                    {#console.log("hide");#}
+                    it.parentNode.style.display = "none";
+                });
+                document.getElementById("btn3").setAttribute("value", "1");
+            } else {
+                var list = document.getElementsByClassName("giveup");
+                Array.prototype.forEach.call(list, function (it) {
+                    {#console.log("hide");#}
+                    it.parentNode.style.display = "";
+                });
+                document.getElementById("btn3").setAttribute("value", "0");
+            }
+        }
+
+
+        {#var list = document.getElementsByClassName("finished");#}
+        {#Array.prototype.forEach.call(list, function (it) {#}
+        {#    if (type == 2) {#}
+        {#        console.log("hide");#}
+        {#        it.parentNode.style.display = "none";#}
+        {#    } else {#}
+        {#        console.log("show");#}
+        {#        it.parentNode.style.display = "";#}
+        {#    }#}
+        {# })#}
+    }
+
+
+</script>
+
+</body>
+
+</html>

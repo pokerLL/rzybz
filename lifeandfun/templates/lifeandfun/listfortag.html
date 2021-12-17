@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'lifeandfun/css/font-awesome.min.css' %}"
+          type="text/css">
+    <link rel="stylesheet" href="{% static 'lifeandfun/css/bootstrap-4.3.1.css' %}">
+    <!-- mainpage -->
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'lifeandfun/css/dr2016.css' %}">
+    <script type="text/javascript" src="{% static 'lifeandfun/js/j.m.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lifeandfun/js/main.js' %}"></script>
+    <link href="{% static 'lifeandfun/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lifeandfun/assets/css/style.css' %}" rel="stylesheet">
+</head>
+
+<body>
+
+{% include "lifeandfun/navbar.html" %}
+
+
+<div class="container">
+
+    {% for i in articles %}
+        {% if forloop.counter == 1 or forloop.counter == 4 or forloop.counter == 7 or forloop.counter == 10 %}
+            <div class="row clearfix">
+        {% endif %}
+    <div class="col-md-4">
+
+        <div class="card card-blog">
+            <div class="card-header">
+                <h3 class="card-title"><a href="/life/detail/{{ i.id }}">{{ i.title }}</a></h3>
+
+            </div>
+
+            <div class="card-body">
+                {#                <div class="card-category-box">#}
+                {#                    <div class="card-category">#}
+                {#                        <h6 class="category">{{ i.tags.first }}</h6>#}
+                {#                    </div>#}
+                {#                </div>#}
+
+                <p class="card-description" href="detail/{{ i.id }}">
+                    {{ i.description }}
+                </p>
+            </div>
+            <div class="card-body">
+                <div class="post-date">
+                    <span></span> {{ i.poll_num }}点赞
+                </div>
+                <div class="post-date">
+                    <span></span> {{ i.view_num }}浏览
+                </div>
+                <div class="post-date">
+                    <span></span> {{ i.comment_num }}评论
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="post-author">
+                    <a href="#">
+                        <img src="{% static 'lifeandfun/assets/img/testimonial-2.jpg' %}" alt=""
+                             class="avatar rounded-circle">
+                        <span class="author">{{ i.username }}</span>
+                    </a>
+                </div>
+                <div class="post-date">
+                    <span class="ion-ios-clock-outline"></span> {{ i.u_time.date }}
+                </div>
+            </div>
+        </div>
+
+    </div>
+    {% if forloop.counter == 3 or forloop.counter == 6 or forloop.counter == 9 or forloop.counter == 12 %}
+        </div>
+    {% endif %}
+
+    {% empty %}
+        <p>这里是内容的荒原，暂时什么都还没有。</p>
+
+    {% endfor %}
+</div>
+<script src="{% static 'lifeandfun/js/jquery-3.3.1.slim.min.js' %}"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="{% static 'lifeandfun/js/popper.min.js' %}"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+<script src="{% static 'lifeandfun/css/bootstrap.min.css' %}"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

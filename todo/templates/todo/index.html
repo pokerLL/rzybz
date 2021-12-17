@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Todo</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="{% static 'todo/css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body style="">
+
+{% if message %}
+    <div class="modal-dialog alert alert-warning">{{ message }}</div>
+    <script>
+        window.setTimeout("window.location='/users/login/'", 2000);
+    </script>
+{% elif not_for_this_app %}
+    <div class="alert-warning alert">
+        您的账号{{ request.session.nickname }}尚未在当前应用注册，可以输入一个只在这一应用生效的用户名：
+        <form action="/todo/register/" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="u_id" value="{{ request.session.u_id }}">
+            <label>在当前app的昵称:</label>
+            <input type="text" name="mynickname" class="form-control">
+            <div class="btn-group-lg">
+                <input class="button btn-primary" type="submit" class="form-control">
+                <a class="button btn-primary" href="/todo/register">跳过，使用相同的昵称。</a>
+                <a class="button btn-primary" href="/">退出</a>
+            </div>
+        </form>
+    </div>
+{% else %}
+    <div class="alert-success alert">
+        欢迎登陆，{{ request.session.thisnickname }}(id为{{ request.session.thisid }})
+    </div>
+{% endif %}
+
+
+</body>
+</html>

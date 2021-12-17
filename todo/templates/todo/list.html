@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'todo/css/font-awesome.min.css' %}"
+          type="text/css">
+    <link rel="stylesheet" href="{% static 'todo/css/bootstrap-4.3.1.css' %}">
+</head>
+
+<body>
+<div class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <form id="c_form-h" class="" action="/todo/newlist/" method="post" align="right" onsubmit="pro()">
+                    {% csrf_token %}
+                    <div class="form-group row"><label class="col-2 col-form-label">分组名</label>
+                        <div class="col-10">
+                            <input class="form-control" placeholder="分组名" name="name">
+                        </div>
+                    </div>
+                    <div class="form-group row"><label class="col-2 col-form-label">描述</label>
+                        <div class="col-10">
+                            <input class="form-control" placeholder="描述" name="description">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function pro() {
+        {#window.close();#}
+    }
+
+</script>
+
+<script src="{% static 'todo/js/jquery-3.3.1.slim.min.js' %}"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"
+        style=""></script>
+<script src="{% static 'todo/js/popper.min.js' %}"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"
+        style=""></script>
+<script src="{% static 'todo/js/bootstrap.min.js' %}"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"
+        style=""></script>
+</body>
+
+</html>
