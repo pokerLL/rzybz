@@ -3,7 +3,8 @@ from datetime import timedelta
 
 from django.conf import settings
 from django.db.models import Q, Sum
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
 
 from Utils.decorators import *
 from Utils.redis_lrucache import *
@@ -147,7 +148,8 @@ def login(request):
             msg = "非管理员账号，无法登入后台。"
             return render(request, "libFront/login.html", locals())
     else:
-        return index(request)
+        return redirect(reverse("libfront:index"))
+        # return index(request)
 
 
 def logout(request):
