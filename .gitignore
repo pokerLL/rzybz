@@ -3,3 +3,9 @@ __pycache__/*
 *.pyc
 settings.py
 *_initial.py
+*.ini
+*.log
+*.pid
+res.sh
+bootstrap.sh
+db.sqlite3
