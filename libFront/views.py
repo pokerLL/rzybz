@@ -158,8 +158,8 @@ def logout(request):
         CACHE.delete("lfindex(){}")
     except:
         pass
-    return index(request)
-
+    return redirect(reverse("libfront:index"))
+    # return index(request)
 
 def hash_code(s, salt='mysite'):
     h = hashlib.sha256()
